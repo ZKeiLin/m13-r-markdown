@@ -1,7 +1,7 @@
 ---
+title: Almost Famous
 output: html_document
 ---
-
 
 ```{r, echo=FALSE, message=FALSE}
 ### Exercise 1 ###
@@ -10,30 +10,36 @@ library(jsonlite)
 library(dplyr)
 library(httr)
 
-# Store a variable "movie"
-movie <- 'Almost Famous'
-# Write a function that allows you to specify a movie, then does the following:
-GetReview <- function(movie) {
+#In an R code block that is executed but not displayed to the user, you should do the following:
   
-  # Construct a search query using YOUR api key
-  # The base URL is https://api.nytimes.com/svc/movies/v2/reviews/search.json?
-  # Your parameters should include a "query" and an "api_key"
-  # Note: the HTTR library will take care of spaces in the arguments
-  # See the interactive console for more detail:https://developer.nytimes.com/movie_reviews_v2.json#/Console/GET/reviews/search.json
-  
-  
-  # Request data using your search query
-  
-  
-  # Flatten the data stored in the `$results` key of the data returned to you
-  
-  # From the most recent review, store the headline, short summary, and link to full article each in their own variables
+ # Store the name of a (popular) movie in a variable movie
+#Create a new variable movie.info by passing your movie variable into a 
+#function that retrieves information from the NYT API (more instructions in the exercise.R) file
+movie <- "Almost Famous"
 
-  # Return an list of the three pieces of information from above
-  
+GetReview <- function(the.movie){
+base.url <- 'https://api.nytimes.com/svc/movies/v2/reviews/search.json?'
+api.key <- 'd3702f209b3a48f4a50f1291267cfe7c'
+query.parameters <- list(query = the.movie, api_key = api.key)
+response <- GET(base.url, query = query.parameters)
+movie.info <- fromJSON(content(response, "text"))
+movie_info_df <- as.data.frame(movie.info)
+final.info <- flatten(movie_info_df)
+
+sum <- final.info$results.summary_short
+headline <- final.info$results.headline
+linke <- final.info$results.link.url
+
+return (list(summary = sum, headline_ = headline, link = linke ))
 }
 
+information <- GetReview(movie)
 
-# Create a variable called `movie.info` by passing your movie to your GetReview function
 
 ```
+## `r information$headline_`
+Below is the summary about `r movie` from the NYT API:
+
+>`r information$summary`
+
+Follow [this link](`r information$link`) to read the full review.

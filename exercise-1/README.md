@@ -10,6 +10,7 @@ In an R code block that is _executed but not displayed_ to the user, you should 
 - Store the name of a (popular) movie in a variable `movie`
 - Create a new variable `movie.info` by passing your `movie` variable into a function that retrieves information from the NYT API (more instructions in the `exercise.R`) file
 
+
 ## Markdown
 After your code block, you should use R Markdown syntax to reference the variables that you created above. Specifically, you should:
 
